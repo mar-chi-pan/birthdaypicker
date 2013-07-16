@@ -86,7 +86,7 @@
 
       var hiddenDate;
       if (settings.defaultDate) {
-        var defDate = new Date(settings.defaultDate + "T00:00:00"),
+        var defDate = new Date(settings.defaultDate),
         defYear = defDate.getFullYear(),
         defMonth = defDate.getMonth() + 1,
         defDay = defDate.getDate();
