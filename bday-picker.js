@@ -26,7 +26,7 @@
             "futureDates"   : false,
             "maxYear"       : todayYear,
             "dateFormat"    : "middleEndian",
-            "placeholder"   : true,
+            "placeholder"   : false,
             "legend"        : "",
             "texts"         : ["Year", "Month", "Day"],
             "defaultDate"   : false,
