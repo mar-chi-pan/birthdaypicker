@@ -31,7 +31,7 @@ The futureDates setting determines whether birthdays in the future can be select
 
 ###maxYear (number)
 ####Default value: current year
-The maxYear setting allows you to set the maximum year that can be chosen, counting up from 0. If you pass in a year (such as 1980) then it uses that year. If you pass in a number under 1000 (such as 5) then it adds it to the current year, so if the year was 2010 then the maxYear would become 2015. If you want the maxYear to be in the future, you must set futureDates to true. If you want the maxYear in the past, you can pass in a negative number or a past year (if its over 1000).
+The maxYear setting allows you to set the maximum year that can be chosen, counting up from 0. If you pass in a year (such as 1980) then it uses that year.
 
 ###dateFormat (string)
 ####Default value: middleEndian
@@ -41,17 +41,17 @@ The dateFormat setting determines the order of the select fields in the markup a
 * littleEndian: Day, Month, Year
 * bigEndian: Year, Month, Day
 
-###monthFormat (string)
-####Default value: short
-The monthFormat setting determines the text displayed in the month select box. It can be either number, short, or long. i.e. Jan or January
-
 ###placeholder (boolean)
-####Default value: true
+####Default value: false
 The placeholder adds a default option to each select list just like Facebook does on their signup page. The default option just says Month, Day, or Year with a colon after it. If you keep this set to true, you will need to add logic, preferably on the client and server, to ensure this option isn't chosen. The value for these options is 0.
+
+###texts ([string, string, string])
+####Default value: ["Year", "Month", "Day"]
+The values the placeholder shows.
 
 ###defaultDate (string)
 ####Default value: false
-The defaultDate must be a date that can be parsed by the Javascript date library. I recommend passing a string in one of the following formats: MM-DD-YYYY or YYYY-MM-DD.
+The defaultDate must be a date that can be parsed by the Javascript date library. I recommend passing a string in one of the following format: YYYY-MM-DD.
 
 ###hiddenDate (boolean)
 ####Default Value: true
