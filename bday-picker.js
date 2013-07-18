@@ -112,7 +112,7 @@
                 maxMonth = 12;
             }
             if (settings.futureDates ||
-                    settings.defaultValue.getMonth() < todayMonth) {
+                    (settings.defaultValue.getMonth() + 1) < todayMonth) {
                 maxDays = monthDays(
                     settings.defaultValue.getMonth() + 1,
                     settings.defaultValue.getFullYear()
