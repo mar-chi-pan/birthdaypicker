@@ -112,7 +112,8 @@
                 maxMonth = 12;
             }
             if (settings.futureDates ||
-                    (settings.defaultValue.getMonth() + 1) < todayMonth) {
+                    (settings.defaultValue.getMonth() + 1) < todayMonth ||
+                    settings.defaultValue.getFullYear() < todayYear) {
                 maxDays = monthDays(
                     settings.defaultValue.getMonth() + 1,
                     settings.defaultValue.getFullYear()
@@ -187,7 +188,8 @@
                 if (settings.futureDates || selectedYear < todayYear) {
                     maxMonth = 12;
                 }
-                if (settings.futureDates || selectedMonth < todayMonth) {
+                if (settings.futureDates || selectedMonth < todayMonth ||
+                        selectedYear < todayYear) {
                     maxDays = monthDays(selectedMonth, selectedYear);
                 }
 
