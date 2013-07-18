@@ -32,13 +32,13 @@
             "defaultDate"   : false,
             "fieldName"     : "birthdate",
             "fieldId"       : "birthdate",
-            "hiddenDate"    : true,
+            "hiddenDate"    : false,
             "onChange"      : false,
             "tabindex"      : null
         };
 
         function monthDays (month, year) {
-            if (month === 2) return 28 + year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
+            if (month === 2) return 28 + (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0));
             return 31 - (month - 1) % 7 % 2;
         }
 
