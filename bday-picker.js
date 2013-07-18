@@ -97,9 +97,11 @@
             // Set the default date if no placeholders or default given
             settings.defaultValue = settings.defaultDate ?
                 new Date(settings.defaultDate) : today;
-            if (settings.minAge)
-                settings.defaultValue.setFullYear(
-                    settings.defaultValue.getFullYear() - settings.minAge);
+            if (settings.minAge && settings.defaultDate === false) {
+                var year = todayYear - settings.minAge;
+                if (settings.defaultValue.getFullYear() < year)
+                    settings.defaultValue.setFullYear(year);
+            }
 
             // Build the initial option sets
             // maxYear is more important than minAge
