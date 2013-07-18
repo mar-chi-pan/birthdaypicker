@@ -33,7 +33,7 @@
             "fieldName"     : "birthdate",
             "fieldId"       : "birthdate",
             "hiddenDate"    : true,
-            "onChange"      : null,
+            "onChange"      : false,
             "tabindex"      : null
         };
 
@@ -203,14 +203,19 @@
                 }
 
                 // update the hidden date
-                if ((selectedYear * selectedMonth * selectedDay) !== 0) {
-                    if (selectedMonth < 10) selectedMonth = "0" + selectedMonth;
-                    if (selectedDay < 10) selectedDay = "0" + selectedDay;
-                    var hiddenDate = selectedYear + "-" + selectedMonth + "-" + selectedDay;
-                    $(this).find('#' + settings.fieldId).val(hiddenDate);
-                    if (settings.onChange !== null) {
-                        settings.onChange(hiddenDate);
-                    }
+                if (settings.hiddenDate &&
+                        (selectedYear * selectedMonth * selectedDay) !== 0) {
+                    var printMonth = selectedMonth < 10 ?
+                        "0" + selectedMonth : selectedMonth;
+                    var printDay = selectedDay < 10 ?
+                        "0" + selectedDay : selectedDay;
+                    $(this).find('#' + settings.fieldId).val(
+                        selectedYear + "-" + printMonth + "-" + printDay);
+                }
+
+                if (settings.onChange &&
+                        (selectedYear * selectedMonth * selectedDay) !== 0) {
+                    settings.onChange([selectedYear, selectedMonth, selectedDay]);
                 }
             });
         });
