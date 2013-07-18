@@ -97,6 +97,9 @@
             // Set the default date if no placeholders or default given
             settings.defaultValue = settings.defaultDate ?
                 new Date(settings.defaultDate) : today;
+            if (settings.minAge)
+                settings.defaultValue.setFullYear(
+                    settings.defaultValue.getFullYear() - settings.minAge);
 
             // Build the initial option sets
             // maxYear is more important than minAge
@@ -105,11 +108,11 @@
             var endYear = todayYear - settings.maxAge;
             var maxMonth = todayMonth, maxDays = todayDay;
             if (settings.futureDates ||
-                    settings.defaultValue.getFullYear() < settings.maxYear) {
+                    settings.defaultValue.getFullYear() < todayYear) {
                 maxMonth = 12;
             }
             if (settings.futureDates ||
-                    settings.defaultValue.getMonth() < maxMonth) {
+                    settings.defaultValue.getMonth() < todayMonth) {
                 maxDays = monthDays(
                     settings.defaultValue.getMonth() + 1,
                     settings.defaultValue.getFullYear()
@@ -181,10 +184,10 @@
                 }
 
                 var maxMonth = todayMonth, maxDays = todayDay;
-                if (settings.futureDates || selectedYear < settings.maxYear) {
+                if (settings.futureDates || selectedYear < todayYear) {
                     maxMonth = 12;
                 }
-                if (settings.futureDates || selectedMonth < maxMonth) {
+                if (settings.futureDates || selectedMonth < todayMonth) {
                     maxDays = monthDays(selectedMonth, selectedYear);
                 }
 
