@@ -39,7 +39,7 @@
 
         function monthDays (month, year) {
             if (month === 2) return 28 + year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
-            return 31 - month % 7 % 2;
+            return 31 - (month - 1) % 7 % 2;
         }
 
         return this.each(function () {
