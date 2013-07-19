@@ -164,10 +164,8 @@
 
             // Update the option sets according to options and user selections
             $fieldset.change(function () {
-                // currently selected values
+                // currently selected year, the rest of the values need recheck
                 var selectedYear = parseInt($year.val(), 10),
-                    selectedMonth = parseInt($month.val(), 10),
-                    selectedDay = parseInt($day.val(), 10),
                     // max values currently in the markup
                     curMaxMonth = parseInt($month.children(":last").val(), 10),
                     curMaxDay = parseInt($day.children(":last").val(), 10);
@@ -187,23 +185,31 @@
                 }
 
                 var maxMonth = todayMonth, maxDays = todayDay;
-                if (settings.futureDates || selectedYear < todayYear) {
-                    maxMonth = 12;
-                }
-                if (settings.futureDates || selectedMonth < todayMonth ||
-                        selectedYear < todayYear) {
-                    maxDays = monthDays(selectedMonth, selectedYear);
-                }
-
-                update($month, curMaxMonth, maxMonth);
                 if (selectedYear > 0) {
                     $month.removeAttr('disabled');
-                }
-                update($day, curMaxDay, maxDays);
-                if (selectedMonth > 0) {
-                    $day.removeAttr('disabled');
+                    if (settings.futureDates || selectedYear < todayYear) {
+                        maxMonth = 12;
+                    }
+                    update($month, curMaxMonth, maxMonth);
+                } else {
+                    $month.val(0);
+                    $month.attr('disabled', 'disabled');
                 }
 
+                var selectedMonth = parseInt($month.val(), 10);
+                if (selectedMonth > 0) {
+                    $day.removeAttr('disabled');
+                    if (settings.futureDates || selectedMonth < todayMonth ||
+                            selectedYear < todayYear) {
+                        maxDays = monthDays(selectedMonth, selectedYear);
+                    }
+                    update($day, curMaxDay, maxDays);
+                } else {
+                    $day.val(0);
+                    $day.attr('disabled', 'disabled');
+                }
+
+                var selectedDay = parseInt($day.val(), 10);
                 // update the hidden date
                 if (settings.hiddenDate &&
                         (selectedYear * selectedMonth * selectedDay) !== 0) {
@@ -215,9 +221,9 @@
                         selectedYear + "-" + printMonth + "-" + printDay);
                 }
 
-                if (settings.onChange &&
-                        (selectedYear * selectedMonth * selectedDay) !== 0) {
-                    settings.onChange([selectedYear, selectedMonth, selectedDay]);
+                if (settings.onChange) {
+                    settings.onChange(
+                        [selectedYear, selectedMonth, selectedDay]);
                 }
             });
         });
