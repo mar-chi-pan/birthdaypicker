@@ -53,11 +53,12 @@ The values the placeholder shows.
 ####Default value: false
 The defaultDate must be a date that can be parsed by the Javascript date library. I recommend passing a string in one of the following format: YYYY-MM-DD.
 
-###hiddenDate (boolean)
-####Default Value: false
-The hiddenDate adds a hidden input field named "birthdate" to the fieldset which concatenates all of the individual select boxes into a single date. This date is only available after the user has selected a date in each of the select boxes. It can make server side handling easier as you only have to worry about one field.
-
 ###legend (string)
 
 ####Default value: null
 The legend setting adds a legend to the fieldset. You can pass in any string.
+
+###onChange (function ([year, month, day]))
+
+####Default value: false
+Callback to be used if needed, it is called after everything finishes with an Array of the date values.

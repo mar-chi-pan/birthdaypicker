@@ -30,9 +30,6 @@
             "legend"        : "",
             "texts"         : ["Year", "Month", "Day"],
             "defaultDate"   : false,
-            "fieldName"     : "birthdate",
-            "fieldId"       : "birthdate",
-            "hiddenDate"    : false,
             "onChange"      : false,
             "tabindex"      : null
         };
@@ -147,19 +144,6 @@
                 $day.val(settings.defaultValue.getDate());
             }
 
-            // Create the hidden date markup
-            if (settings.hiddenDate) {
-                var defMonth = settings.defaultValue.getMonth() + 1,
-                defDay = settings.defaultValue.getDate();
-
-                if (defMonth<10) defMonth = "0" + defMonth;
-                if (defDay<10) defDay = "0" + defDay;
-                $("<input type='hidden' name='" + settings.fieldName + "'/>")
-                    .attr("id", settings.fieldId)
-                    .val(settings.defaultValue.getFullYear() + "-" + defMonth + "-" + defDay)
-                    .appendTo($fieldset);
-            }
-
             $(this).append($fieldset);
 
             // Update the option sets according to options and user selections
@@ -184,7 +168,10 @@
                     }
                 }
 
+                // Calculate the maximum number of months and days
                 var maxMonth = todayMonth, maxDays = todayDay;
+                // First see if there is a year selected to calculate max month
+                // Otherwise disable month
                 if (selectedYear > 0) {
                     $month.removeAttr('disabled');
                     if (settings.futureDates || selectedYear < todayYear) {
@@ -196,6 +183,8 @@
                     $month.attr('disabled', 'disabled');
                 }
 
+                // See if there is a month & year selected to calculate max day
+                // Otherwise disable day
                 var selectedMonth = parseInt($month.val(), 10);
                 if (selectedMonth > 0) {
                     $day.removeAttr('disabled');
@@ -210,18 +199,8 @@
                 }
 
                 var selectedDay = parseInt($day.val(), 10);
-                // update the hidden date
-                if (settings.hiddenDate &&
-                        (selectedYear * selectedMonth * selectedDay) !== 0) {
-                    var printMonth = selectedMonth < 10 ?
-                        "0" + selectedMonth : selectedMonth;
-                    var printDay = selectedDay < 10 ?
-                        "0" + selectedDay : selectedDay;
-                    $(this).find('#' + settings.fieldId).val(
-                        selectedYear + "-" + printMonth + "-" + printDay);
-                }
-
-                if (settings.onChange) {
+                // Run the callback function with the selected date
+                if ($.isFunction(settings.onChange)) {
                     settings.onChange(
                         [selectedYear, selectedMonth, selectedDay]);
                 }
