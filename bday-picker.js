@@ -106,41 +106,37 @@
                 settings.maxYear : todayYear - settings.minAge;
             var endYear = todayYear - settings.maxAge;
             var maxMonth = todayMonth, maxDays = todayDay;
-            if (settings.futureDates ||
-                    settings.defaultValue.getFullYear() < todayYear) {
-                maxMonth = 12;
-            }
-            if (settings.futureDates ||
-                    (settings.defaultValue.getMonth() + 1) < todayMonth ||
-                    settings.defaultValue.getFullYear() < todayYear) {
-                maxDays = monthDays(
-                    settings.defaultValue.getMonth() + 1,
-                    settings.defaultValue.getFullYear()
-                );
-            }
             if (settings.futureDates && settings.maxYear > startYear) {
                 startYear = settings.maxYear;
             }
             for (var i = startYear; i >= endYear; i--) {
                 $("<option></option>").attr("value", i).text(i).appendTo($year);
             }
-            if (settings.defaultDate || ! settings.placeholder) {
+            if (settings.defaultDate || !settings.placeholder) {
                 $year.val(settings.defaultValue.getFullYear());
             }
-            if (parseInt($year.val(), 10) === 0) {
-                $month.attr('disabled', 'disabled');
-            } else {
-                for (i = 0; i < maxMonth; i++) {
-                    $("<option></option>").attr("value", i + 1).text(i + 1).appendTo($month);
-                }
+
+            if (settings.futureDates || $year.val() < todayYear) {
+                maxMonth = 12;
+            }
+            for (i = 0; i < maxMonth; i++) {
+                $("<option></option>").attr("value", i + 1).text(i + 1).appendTo($month);
+            }
+            if (settings.defaultDate || !settings.placeholder) {
                 $month.val(settings.defaultValue.getMonth() + 1);
             }
-            if (parseInt($month.val(), 10) === 0) {
-                $day.attr('disabled', 'disabled');
-            } else {
-                for (i = 1; i <= maxDays; i++) {
-                    $("<option></option>").attr("value", i).text(i).appendTo($day);
-                }
+
+            if (settings.futureDates || $month.val() < todayMonth ||
+                    $year.val() < todayYear) {
+                maxDays = monthDays(
+                    settings.defaultValue.getMonth() + 1,
+                    settings.defaultValue.getFullYear()
+                );
+            }
+            for (i = 1; i <= maxDays; i++) {
+                $("<option></option>").attr("value", i).text(i).appendTo($day);
+            }
+            if (settings.defaultDate || !settings.placeholder) {
                 $day.val(settings.defaultValue.getDate());
             }
 
@@ -170,33 +166,21 @@
 
                 // Calculate the maximum number of months and days
                 var maxMonth = todayMonth, maxDays = todayDay;
-                // First see if there is a year selected to calculate max month
-                // Otherwise disable month
-                if (selectedYear > 0) {
-                    $month.removeAttr('disabled');
-                    if (settings.futureDates || selectedYear < todayYear) {
-                        maxMonth = 12;
-                    }
-                    update($month, curMaxMonth, maxMonth);
-                } else {
-                    $month.val(0);
-                    $month.attr('disabled', 'disabled');
+                // First calculate max month
+                if (settings.futureDates || selectedYear < todayYear) {
+                    maxMonth = 12;
                 }
+                update($month, curMaxMonth, maxMonth);
 
-                // See if there is a month & year selected to calculate max day
-                // Otherwise disable day
+                // Calculate max day
                 var selectedMonth = parseInt($month.val(), 10);
-                if (selectedMonth > 0) {
-                    $day.removeAttr('disabled');
-                    if (settings.futureDates || selectedMonth < todayMonth ||
-                            selectedYear < todayYear) {
-                        maxDays = monthDays(selectedMonth, selectedYear);
-                    }
-                    update($day, curMaxDay, maxDays);
-                } else {
-                    $day.val(0);
-                    $day.attr('disabled', 'disabled');
+                if (selectedMonth === 0) {
+                    maxDays = 31;
+                } else if (settings.futureDates || selectedMonth < todayMonth ||
+                        selectedYear < todayYear) {
+                    maxDays = monthDays(selectedMonth, selectedYear);
                 }
+                update($day, curMaxDay, maxDays);
 
                 var selectedDay = parseInt($day.val(), 10);
                 // Run the callback function with the selected date
